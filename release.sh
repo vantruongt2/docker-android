@@ -1,7 +1,7 @@
 #!/bin/bash
 # Bash version should >= 4 to be able to run this script.
 
-IMAGE="${DOCKER_ORG:-budtmo}/docker-android"
+IMAGE="${DOCKER_ORG:-vantruongt2}/docker-android"
 
 if [ -z "$1" ]; then
     read -p "Task (test|build|push|all) : " TASK
@@ -10,7 +10,7 @@ else
 fi
 
 if [ -z "$2" ]; then
-    read -p "Android version (5.0.1|5.1.1|6.0|7.0|7.1.1|8.0|8.1|9.0|10.0|all): " ANDROID_VERSION
+    read -p "Android version (8.0|9.0|10.0|all): " ANDROID_VERSION
 else
     ANDROID_VERSION=$2
 fi
@@ -22,29 +22,17 @@ else
 fi
 
 declare -A list_of_levels=(
-        [5.0.1]=21
-        [5.1.1]=22
-        [6.0]=23
-        [7.0]=24
-        [7.1.1]=25
         [8.0]=26
-        [8.1]=27
         [9.0]=28
         [10.0]=29
 )
 
 # The version of the Chrome browser installed on the Android emulator needs to be known beforehand
 # in order to chose the proper version of chromedriver (see http://chromedriver.chromium.org/downloads)
-declare -A chromedriver_versions=(
-        [5.0.1]="2.21"
-        [5.1.1]="2.13"
-        [6.0]="2.18"
-        [7.0]="2.23"
-        [7.1.1]="2.28"
-        [8.0]="2.31"
-        [8.1]="2.33"
-        [9.0]="2.40"
-        [10.0]="74.0.3729.6"
+declare -A chromedriver_versions=(        
+        [8.0]="81.0.4044.69"
+        [9.0]="81.0.4044.69"
+        [10.0]="81.0.4044.69"
 )
 
 function get_android_versions() {
@@ -134,7 +122,8 @@ function test() {
 function build() {
     # Remove pyc files
     find . -name "*.pyc" -exec rm -f {} \;
-
+    # Get latest chromedriver version
+    CHROME_DR_VER="`wget -qO- https://chromedriver.storage.googleapis.com/LATEST_RELEASE`"
     # Build docker image
     FILE_NAME=docker/Emulator_x86
 
@@ -157,7 +146,7 @@ function build() {
         echo "[BUILD] API Level: $level"
         sys_img=$processor
         echo "[BUILD] System Image: $sys_img"
-        chrome_driver="${chromedriver_versions[$v]}"
+        chrome_driver="$CHROME_DR_VER"
         echo "[BUILD] chromedriver version: $chrome_driver"
         image_version="$IMAGE-$processor-$v:$RELEASE"
         image_latest="$IMAGE-$processor-$v:latest"

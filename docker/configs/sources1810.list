@@ -1,2 +1,2 @@
-deb http://archive.ubuntu.com/ubuntu/ cosmic main restricted universe 
-deb http://security.ubuntu.com/ubuntu/ cosmic-security main restricted universe
+deb http://old-releases.ubuntu.com/ubuntu/ cosmic main restricted universe
+deb http://old-releases.ubuntu.com/ubuntu/ cosmic-security main restricted universe 

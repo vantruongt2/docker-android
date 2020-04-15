@@ -11,13 +11,13 @@ WORKDIR /root
 # Polyverse
 # https://polyverse.io/how-it-works/
 #===========
-ARG TOKEN=xxx
+#ARG TOKEN=xxx
 
-RUN curl -s https://sh.polyverse.io | sh -s install ${TOKEN}; \
-    if [ $? -eq 0 ]; then \
-      apt -y update && \
-      apt-get -y install --reinstall $(dpkg --get-selections | awk '{print $1}'); \
-    fi
+#RUN curl -s https://sh.polyverse.io | sh -s install ${TOKEN}; \
+#    if [ $? -eq 0 ]; then \
+#      apt -y update && \
+#      apt-get -y install --reinstall $(dpkg --get-selections | awk '{print $1}'); \
+#    fi
 
 #==================
 # General Packages
@@ -136,9 +136,9 @@ RUN yes | sdkmanager --licenses && \
 # Download proper version of chromedriver
 # to be able to use Chrome browser in emulator
 #==============================================
-RUN wget -nv -O chrome.zip "https://chromedriver.storage.googleapis.com/${CHROME_DRIVER}/chromedriver_linux64.zip" \
- && unzip -x chrome.zip \
- && rm chrome.zip
+#RUN wget -nv -O chrome.zip "https://chromedriver.storage.googleapis.com/${CHROME_DRIVER}/chromedriver_linux64.zip" \
+# && unzip -x chrome.zip \
+# && rm chrome.zip
 
 #================================================================
 # Download Google Play Services APK and Play Store from apklinker
@@ -171,6 +171,12 @@ ADD images/logo_dockerandroid_small.png /root/logo.png
 ADD src/.fehbg /root/.fehbg
 RUN sed -i "s/<number>4<\/number>/<number>1<\/number>/g" /etc/xdg/openbox/rc.xml \
     && echo /root/.fehbg >> /etc/xdg/openbox/autostart
+
+#=============================================
+# Copy chrome browser
+#=============================================
+#COPY docker/browser/chrome_browser.apk /root/
+
 
 #===============
 # Expose Ports

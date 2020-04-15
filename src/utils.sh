@@ -28,7 +28,10 @@ function install_google_play () {
   echo "Google Play Service will be installed"
   adb install -r "/root/google_play_services.apk"
   echo "Google Play Store will be installed"
-  adb install -r "/root/google_play_store.apk"
+  adb install -r "/root/google_play_store.apk"  
+  echo "Google browser will be installed"
+  adb install -r "/root/chrome_browser.apk"
+
 }
 
 function disable_animation () {
@@ -69,6 +72,18 @@ function enable_proxy_if_needed () {
   fi
 }
 
+function downloadChrome () {
+  echo "Download chrome driver"
+  CHROME_DRIVER="`wget -qO- https://chromedriver.storage.googleapis.com/LATEST_RELEASE`"
+  wget -nv -O /root/chrome.zip "https://chromedriver.storage.googleapis.com/${CHROME_DRIVER}/chromedriver_linux64.zip" \
+  && unzip -x /root/chrome.zip \
+  && rm /root/chrome.zip
+
+  echo "Download chrome browser"
+  python3 /root/src/downloadChrome.py
+}
+
+downloadChrome
 enable_proxy_if_needed
 sleep 1
 change_language_if_needed
