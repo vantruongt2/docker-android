@@ -90,6 +90,8 @@ services:
       - SELENIUM_HOST=selenium_hub
       - MOBILE_WEB_TEST=true
       - AUTO_RECORD=true
+      - CHROME_DRIVER=latest
+      - CHROME_APK_URL="your link"
 
   # Docker-Android for mobile website testing with default browser
   # Default browser exists only for version 5.0.1, 5.1.1 and 6.0

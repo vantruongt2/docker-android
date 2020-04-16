@@ -72,21 +72,37 @@ function enable_proxy_if_needed () {
   fi
 }
 
-function downloadChrome () {
-  echo "Download chrome driver"
-  CHROME_DRIVER="`wget -qO- https://chromedriver.storage.googleapis.com/LATEST_RELEASE`"
-  wget -nv -O /root/chrome.zip "https://chromedriver.storage.googleapis.com/${CHROME_DRIVER}/chromedriver_linux64.zip" \
+function downloadChrome () {  
+  chromeAPK="https://links-helper.herokuapp.com/links/chrome/apk/download"
+  echo "$CHROME_DRIVER"
+
+  #if [ -z "$CHROME_DRIVER" ] || ["$CHROME_DRIVER" = "latest"] ; then
+  if [ "$CHROME_DRIVER" = "latest" ] || [ -z "$CHROME_DRIVER" ]; then
+    version="`wget -qO- https://chromedriver.storage.googleapis.com/LATEST_RELEASE`"
+  else
+    version="$CHROME_DRIVER"
+  fi
+    
+  echo "Download chrome driver: https://chromedriver.storage.googleapis.com/${version}/chromedriver_linux64.zip"  
+  wget -nv -O /root/chrome.zip "https://chromedriver.storage.googleapis.com/${version}/chromedriver_linux64.zip" \
   && unzip -x /root/chrome.zip \
   && rm /root/chrome.zip
 
-  echo "Download chrome browser"
-  python3 /root/src/downloadChrome.py
+  if [ ! -z "$CHROME_APK_URL" ]; then
+    chromeAPK="$CHROME_APK_URL"
+  fi
+
+  echo "$chromeAPK"
+  echo "Download chrome browser from: $chromeAPK"
+  wget -nv -O /root/chrome_browser.apk "$chromeAPK" --user-agent="Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:75.0) Gecko/20100101 Firefox/75.0"
+  #wget -nv -O chrome_browser.apk "$chromeAPK" --user-agent="Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:75.0) Gecko/20100101 Firefox/75.0"
+ # python3 /root/src/downloadChrome.py
 }
 
 downloadChrome
 enable_proxy_if_needed
-sleep 1
-change_language_if_needed
+#sleep 1
+#change_language_if_needed
 sleep 1
 install_google_play
 disable_animation
