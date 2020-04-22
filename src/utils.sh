@@ -25,10 +25,10 @@ function change_language_if_needed() {
 
 function install_google_play () {
   wait_emulator_to_be_ready
-  echo "Google Play Service will be installed"
-  adb install -r "/root/google_play_services.apk"
-  echo "Google Play Store will be installed"
-  adb install -r "/root/google_play_store.apk"  
+  #echo "Google Play Service will be installed"
+  #adb install -r "/root/google_play_services.apk"
+  #echo "Google Play Store will be installed"
+  #adb install -r "/root/google_play_store.apk"  
   echo "Google browser will be installed"
   adb install -r "/root/chrome_browser.apk"
 
@@ -73,9 +73,8 @@ function enable_proxy_if_needed () {
 }
 
 function downloadChrome () {  
-  chromeAPK="https://links-helper.herokuapp.com/links/chrome/apk/download"
+  
   echo "$CHROME_DRIVER"
-
   #if [ -z "$CHROME_DRIVER" ] || ["$CHROME_DRIVER" = "latest"] ; then
   if [ "$CHROME_DRIVER" = "latest" ] || [ -z "$CHROME_DRIVER" ]; then
     version="`wget -qO- https://chromedriver.storage.googleapis.com/LATEST_RELEASE`"
@@ -88,13 +87,8 @@ function downloadChrome () {
   && unzip -x /root/chrome.zip \
   && rm /root/chrome.zip
 
-  if [ ! -z "$CHROME_APK_URL" ]; then
-    chromeAPK="$CHROME_APK_URL"
-  fi
-
-  echo "$chromeAPK"
-  echo "Download chrome browser from: $chromeAPK"
-  wget -nv -O /root/chrome_browser.apk "$chromeAPK" --user-agent="Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:75.0) Gecko/20100101 Firefox/75.0"
+  echo "Download chrome browser from: $CHROME_APK_URL"
+  wget -nv -O /root/chrome_browser.apk "$CHROME_APK_URL" --user-agent="Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:75.0) Gecko/20100101 Firefox/75.0"
   #wget -nv -O chrome_browser.apk "$chromeAPK" --user-agent="Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:75.0) Gecko/20100101 Firefox/75.0"
  # python3 /root/src/downloadChrome.py
 }
